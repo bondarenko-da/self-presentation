@@ -167,7 +167,7 @@ export function Projects() {
           className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6"
         >
           {[
-            { value: '20+', label: 'Проектов' },
+            { value: '12+', label: 'Проектов' },
             { value: '8+', label: 'Отраслей' },
             { value: '1 ТБ/день', label: 'Объём данных' },
             { value: '10x', label: 'Оптимизация' },

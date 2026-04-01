@@ -15,6 +15,12 @@ const education = {
 
 const certificates = [
   {
+    name: 'Arenadata Catalog: Администратор',
+    issuer: 'Arenadata',
+    year: 2025,
+    link: 'https://cloud.mail.ru/public/qd7D/jkKdGg54V',
+  },
+  {
     name: 'Построение корпоративной аналитической платформы',
     issuer: 'Яндекс Практикум',
     year: 2024,
@@ -181,33 +187,29 @@ export function Education() {
 
               <div className="space-y-4">
                 {certificates.map((cert, index) => (
-                  <motion.div
+                  <motion.a
                     key={cert.name}
+                    href={cert.link || '#'}
+                    target={cert.link ? '_blank' : undefined}
+                    rel={cert.link ? 'noopener noreferrer' : undefined}
                     initial={{ opacity: 0, y: 10 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
-                    className="group flex items-start justify-between p-4 rounded-xl bg-secondary/50 hover:bg-secondary transition-colors"
+                    className={`group flex items-start justify-between p-4 rounded-xl bg-secondary/50 hover:bg-secondary transition-colors ${
+                      cert.link ? 'cursor-pointer hover:shadow-md hover:border-primary/30 border border-transparent' : 'cursor-default'
+                    }`}
                   >
                     <div className="flex-1">
-                      <h4 className="font-medium text-sm">{cert.name}</h4>
+                      <h4 className="font-medium text-sm flex items-center gap-2">
+                        {cert.name}
+                        {cert.link && <ExternalLink className="w-3.5 h-3.5 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />}
+                      </h4>
                       <p className="text-xs text-muted-foreground mt-0.5">{cert.issuer}</p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-xs">
-                        {cert.year}
-                      </Badge>
-                      {cert.link && (
-                        <a
-                          href={cert.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-1 hover:text-primary transition-colors"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                      )}
-                    </div>
-                  </motion.div>
+                    <Badge variant="outline" className="text-xs">
+                      {cert.year}
+                    </Badge>
+                  </motion.a>
                 ))}
               </div>
 

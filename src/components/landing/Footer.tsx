@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Heart, ArrowUp, Github, Send } from 'lucide-react'
+import { Heart, ArrowUp, Github, Send, Database } from 'lucide-react'
 
 export function Footer() {
   const scrollToTop = () => {
@@ -9,8 +9,23 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-card border-t border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer className="relative bg-card border-t border-border overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute right-0 bottom-0 w-1/3 h-full">
+          <img
+            src="/images/dwh-illustration.png"
+            alt=""
+            className="w-full h-full object-contain object-right"
+          />
+        </div>
+      </div>
+
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-accent/10 rounded-full blur-2xl" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-3 gap-8 items-center">
           {/* Logo & description */}
           <div>
@@ -26,6 +41,14 @@ export function Footer() {
             <p className="text-sm text-muted-foreground max-w-xs">
               Разработчик и архитектор корпоративных хранилищ данных с опытом 13+ лет.
             </p>
+
+            {/* Tech icons */}
+            <div className="flex items-center gap-2 mt-4">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center" title="Data Warehouse">
+                <Database className="w-4 h-4 text-primary" />
+              </div>
+              <span className="text-xs text-muted-foreground">SQL • DWH • Data Engineering</span>
+            </div>
           </div>
 
           {/* Quick links */}
