@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Download, Mail, Github, Linkedin } from 'lucide-react'
+import { Menu, X, Mail, Download, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { toast } from 'sonner'
 
 const navItems = [
   { id: 'about', label: 'О себе' },
@@ -19,6 +20,7 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
+  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,13 +43,26 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
     }
     setIsMobileMenuOpen(false)
-  }
+  }, [])
+
+  const copyEmail = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText('bondarenko-da@mail.ru')
+      setCopied(true)
+      toast.success('Email скопирован!', {
+        description: 'bondarenko-da@mail.ru добавлен в буфер обмена',
+      })
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      toast.error('Ошибка копирования')
+    }
+  }, [])
 
   return (
     <motion.header
@@ -101,10 +116,19 @@ export function Header() {
               variant="outline"
               size="sm"
               className="gap-2"
-              onClick={() => scrollToSection('contact')}
+              onClick={copyEmail}
             >
-              <Mail className="w-4 h-4" />
-              Связаться
+              {copied ? (
+                <>
+                  <Check className="w-4 h-4" />
+                  Скопировано
+                </>
+              ) : (
+                <>
+                  <Mail className="w-4 h-4" />
+                  Связаться
+                </>
+              )}
             </Button>
             <Button
               size="sm"
@@ -152,9 +176,23 @@ export function Header() {
                 </motion.button>
               ))}
               <div className="pt-4 flex gap-3">
-                <Button variant="outline" size="sm" className="flex-1 gap-2">
-                  <Mail className="w-4 h-4" />
-                  Связаться
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 gap-2"
+                  onClick={copyEmail}
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      Скопировано
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="w-4 h-4" />
+                      Связаться
+                    </>
+                  )}
                 </Button>
                 <Button size="sm" className="flex-1 gap-2">
                   <Download className="w-4 h-4" />

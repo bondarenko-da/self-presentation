@@ -1,9 +1,11 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { MapPin, Briefcase, Mail, Phone, Send, ChevronDown } from 'lucide-react'
+import { MapPin, Briefcase, Mail, Phone, Send, ChevronDown, Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 const roles = [
   'Senior Developer',
@@ -13,10 +15,25 @@ const roles = [
 ]
 
 export function Hero() {
+  const [copied, setCopied] = useState(false)
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText('bondarenko-da@mail.ru')
+      setCopied(true)
+      toast.success('Email скопирован!', {
+        description: 'bondarenko-da@mail.ru добавлен в буфер обмена',
+      })
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      toast.error('Ошибка копирования')
     }
   }
 
@@ -129,10 +146,19 @@ export function Hero() {
               <Button
                 size="lg"
                 className="gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/25"
-                onClick={() => scrollToSection('contact')}
+                onClick={copyEmail}
               >
-                <Mail className="w-5 h-5" />
-                Связаться со мной
+                {copied ? (
+                  <>
+                    <Check className="w-5 h-5" />
+                    Скопировано!
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-5 h-5" />
+                    Связаться со мной
+                  </>
+                )}
               </Button>
               <Button
                 variant="outline"
@@ -159,13 +185,13 @@ export function Hero() {
                 +7 (968) 739-10-20
               </a>
               <a
-                href="https://t.me/DmABond"
+                href="https://web.telegram.org/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
               >
                 <Send className="w-4 h-4" />
-                @DmABond
+                @DmBond
               </a>
             </motion.div>
           </motion.div>
@@ -212,7 +238,7 @@ export function Hero() {
                 className="absolute -left-4 bottom-1/4 glass px-4 py-3 rounded-xl shadow-lg"
               >
                 <div className="text-sm text-muted-foreground">Проектов</div>
-                <div className="text-2xl font-bold text-primary">20+</div>
+                <div className="text-2xl font-bold text-primary">12+</div>
               </motion.div>
             </div>
           </motion.div>

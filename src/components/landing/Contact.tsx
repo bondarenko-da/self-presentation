@@ -2,8 +2,9 @@
 
 import { motion } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
-import { Mail, Phone, MapPin, Send, Github, FileText } from 'lucide-react'
+import { Mail, Phone, MapPin, Send, Github, FileText, Check, Copy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 
 const contacts = [
   {
@@ -16,16 +17,17 @@ const contacts = [
   {
     icon: Send,
     label: 'Telegram',
-    value: '@DmABond',
-    href: 'https://t.me/DmABond',
-    note: null,
+    value: '@DmBond',
+    href: 'https://web.telegram.org/',
+    note: 'Открыть Telegram',
   },
   {
     icon: Mail,
     label: 'Email',
     value: 'bondarenko-da@mail.ru',
     href: 'mailto:bondarenko-da@mail.ru',
-    note: null,
+    note: 'Нажмите для копирования',
+    copyable: true,
   },
   {
     icon: MapPin,
@@ -65,6 +67,137 @@ function useInView(threshold = 0.2) {
 
 export function Contact() {
   const { isInView, ref } = useInView(0.2)
+  const [copied, setCopied] = useState(false)
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText('bondarenko-da@mail.ru')
+      setCopied(true)
+      toast.success('Email скопирован!', {
+        description: 'bondarenko-da@mail.ru добавлен в буфер обмена',
+      })
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      toast.error('Ошибка копирования')
+    }
+  }
+
+  const downloadCV = () => {
+    // Create CV content
+    const cvContent = `
+ДМИТРИЙ БОНДАРЕНКО
+Senior Developer | Data Engineer | DWH Architect | Team Lead
+
+========================================
+КОНТАКТНАЯ ИНФОРМАЦИЯ
+========================================
+Телефон: +7 (968) 739-10-20 (WhatsApp / Telegram)
+Telegram: @DmBond
+Email: bondarenko-da@mail.ru
+Локация: Москва (удалённо / гибрид)
+
+========================================
+ПРОФЕССИОНАЛЬНЫЙ ПРОФИЛЬ
+========================================
+Разработчик и архитектор корпоративных хранилищ данных (DWH) с опытом 13+ лет в аналитике и разработке, из них 4+ года в роли ведущего разработчика / архитектора DWH в системной интеграции и крупных корпоративных проектах.
+
+Имею богатый опыт проектирования и создания корпоративных хранилищ данных, в т.ч. "с нуля" для Enterprise-компаний (ритейл, производство, телеком, госсектор, финсектор).
+
+========================================
+КЛЮЧЕВЫЕ КОМПЕТЕНЦИИ
+========================================
+• Разработка и архитектура DWH / КХД (Enterprise Data Warehouse)
+• Проектирование моделей данных: Kimball, Inmon, Data Vault 2.0
+• Построение слоёв: Raw / Staging / ODS / DDS / Data Marts
+• ETL/ELT: Airflow, NiFi, SSIS, Azure Data Factory, dbt
+• Оптимизация SQL, индексы, partitioning, MPP-оптимизация
+• Витрины данных для BI (Power BI / Tableau)
+
+========================================
+ТЕХНИЧЕСКИЙ СТЕК
+========================================
+SQL/DB: MS SQL Server, PostgreSQL, Oracle, Greenplum, ClickHouse, Impala
+ETL/ELT: Apache Airflow, Apache NiFi, MS SSIS, Azure Data Factory, dbt
+Cloud: Microsoft Azure, Yandex Cloud
+Python: pandas, numpy, sqlalchemy
+DevOps: Git, Linux, Docker, SSH
+BI: Power BI, Tableau
+
+========================================
+ОПЫТ РАБОТЫ
+========================================
+
+GMCS Verex | Ведущий Разработчик / Архитектор SQL DWH
+Октябрь 2021 — настоящее время (4+ года)
+• Архитектура и проектирование КХД "с нуля" для крупных компаний
+• Разработка витрин на Greenplum, PostgreSQL, MS SQL, ClickHouse
+• Оптимизация запросов - сокращение времени в 10 раз
+• ETL/ELT пайплайны объемом до 1 ТБ/день
+
+Спортмастер Россия | Аналитик (SQL / Python)
+Октябрь 2019 — Сентябрь 2021 (2 года)
+• Разработка аналитической отчётности на Oracle SQL
+• Прогнозная модель продаж (+5% прибыли)
+
+Росгосстрах Банк | Начальник отдела аналитической поддержки
+Ноябрь 2017 — Октябрь 2019 (2 года)
+• Разработка банковской отчётности
+• Руководство командой
+
+Софткей (Softkey) | Аналитик SQL
+Февраль 2013 — Ноябрь 2017 (4 года 10 месяцев)
+• Разработка управленческой отчётности
+
+========================================
+КЛЮЧЕВЫЕ ПРОЕКТЫ
+========================================
+• ТМК - DWH на Greenplum в Yandex Cloud
+• GAGAWA - DWH на MS SQL Server, Azure Data Factory
+• Сколково - DWH на PostgreSQL, Apache NiFi
+• Счетная палата РФ - витрины на Greenplum
+• X5 Retail Group - витрины в Greenplum (Data Vault)
+• Ростелеком - витрины в Greenplum (Data Vault 2.0)
+
+========================================
+ОБРАЗОВАНИЕ
+========================================
+НИЯУ МИФИ
+Факультет управления и экономики высоких технологий
+Специальность: Математические методы в экономике
+Год окончания: 2003 (красный диплом)
+
+========================================
+СЕРТИФИКАТЫ
+========================================
+• 2025 - Arenadata Catalog: Администратор
+• 2024 - Построение корпоративной аналитической платформы (Яндекс Практикум)
+• 2023 - Инженер облачных сервисов (Яндекс Практикум)
+• 2023 - Arenadata QuickMarts / ADCSQM System Administrator
+• 2020 - Python для анализа данных (Нетология)
+• 2013 - Microsoft M10774 Querying Microsoft SQL Server 2012
+
+========================================
+ЯЗЫКИ
+========================================
+Русский - родной
+Английский - B2 (чтение документации, переписка)
+Немецкий - A1
+`
+
+    const blob = new Blob([cvContent], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'CV_Бондаренко_Дмитрий.txt'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+
+    toast.success('CV скачан!', {
+      description: 'Файл сохранён в папку загрузок',
+    })
+  }
 
   return (
     <section
@@ -105,25 +238,28 @@ export function Contact() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                    className="flex items-start gap-4 p-4 rounded-xl hover:bg-secondary/50 transition-colors group"
+                    onClick={contact.copyable ? copyEmail : undefined}
+                    className={`flex items-start gap-4 p-4 rounded-xl hover:bg-secondary/50 transition-colors group ${
+                      contact.copyable ? 'cursor-pointer' : ''
+                    }`}
                   >
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
                       <contact.icon className="w-5 h-5 text-primary" />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm text-muted-foreground">{contact.label}</p>
-                      {contact.href ? (
-                        <a
-                          href={contact.href}
-                          target={contact.href.startsWith('http') ? '_blank' : undefined}
-                          rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          className="font-medium hover:text-primary transition-colors"
-                        >
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium hover:text-primary transition-colors">
                           {contact.value}
-                        </a>
-                      ) : (
-                        <p className="font-medium">{contact.value}</p>
-                      )}
+                        </p>
+                        {contact.copyable && (
+                          copied ? (
+                            <Check className="w-4 h-4 text-green-500" />
+                          ) : (
+                            <Copy className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                          )
+                        )}
+                      </div>
                       {contact.note && (
                         <p className="text-xs text-muted-foreground mt-0.5">{contact.note}</p>
                       )}
@@ -134,11 +270,27 @@ export function Contact() {
 
               {/* Action buttons */}
               <div className="mt-8 flex flex-wrap gap-4">
-                <Button className="flex-1 gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
-                  <Mail className="w-4 h-4" />
-                  Написать письмо
+                <Button
+                  onClick={copyEmail}
+                  className="flex-1 gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      Скопировано!
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="w-4 h-4" />
+                      Связаться
+                    </>
+                  )}
                 </Button>
-                <Button variant="outline" className="flex-1 gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1 gap-2"
+                  onClick={downloadCV}
+                >
                   <FileText className="w-4 h-4" />
                   Скачать CV
                 </Button>
@@ -217,7 +369,7 @@ export function Contact() {
                     hh
                   </a>
                   <a
-                    href="https://t.me/DmABond"
+                    href="https://web.telegram.org/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-colors"

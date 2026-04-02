@@ -212,16 +212,6 @@ export function Education() {
                   </motion.a>
                 ))}
               </div>
-
-              {/* Additional info */}
-              <div className="mt-8 pt-8 border-t border-border">
-                <h4 className="font-semibold mb-4">Профессиональные интересы</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Ориентирован на архитектуру и промышленную разработку DWH. Умею работать
-                  с бизнесом и техническими командами. В проектах ценю качество,
-                  предсказуемость, документирование и ответственность за результат.
-                </p>
-              </div>
             </div>
           </motion.div>
         </div>

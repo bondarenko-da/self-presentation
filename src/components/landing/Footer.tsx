@@ -4,28 +4,30 @@ import { motion } from 'framer-motion'
 import { Heart, ArrowUp, Github, Send, Database } from 'lucide-react'
 
 export function Footer() {
+  const year = 2025
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
     <footer className="relative bg-card border-t border-border overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute right-0 bottom-0 w-1/3 h-full">
-          <img
-            src="/images/dwh-illustration.png"
-            alt=""
-            className="w-full h-full object-contain object-right"
-          />
-        </div>
+      {/* Office background image - center part */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-r from-card via-card/80 to-card" />
+        <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-card" />
+        <img
+          src="/images/office-footer.jpg"
+          alt=""
+          className="w-full h-full object-cover object-center opacity-20"
+        />
       </div>
 
       {/* Decorative elements */}
       <div className="absolute top-0 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-accent/10 rounded-full blur-2xl" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-3 gap-8 items-center">
           {/* Logo & description */}
           <div>
@@ -80,7 +82,7 @@ export function Footer() {
               <Github className="w-5 h-5" />
             </a>
             <a
-              href="https://t.me/DmABond"
+              href="https://web.telegram.org/"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-colors"
@@ -99,7 +101,7 @@ export function Footer() {
         {/* Copyright */}
         <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
           <p className="flex items-center justify-center gap-1">
-            © {new Date().getFullYear()} Дмитрий Бондаренко. Создано с{' '}
+            © {year} Дмитрий Бондаренко. Создано с{' '}
             <Heart className="w-4 h-4 text-red-500" /> для презентации профессионального опыта.
           </p>
         </div>
